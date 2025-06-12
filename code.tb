@@ -1,0 +1,48 @@
+`timescale 1ns / 1ps
+
+
+
+module synchionzer();
+
+
+
+
+    reg clk;
+    reg async_in;
+    wire sync_out;
+
+  
+   synchoinzer_2 uut (
+        .clk(clk),
+        .async_in(async_in),
+        .sync_out(sync_out)
+    );
+
+   
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;  // Toggle every 5ns
+    end
+
+    
+    initial begin
+        
+        async_in = 0;
+
+       
+        #12 async_in = 1;  // asynchronous pulse
+        #7  async_in = 0;
+        
+
+       
+        #50 $finish;
+    end
+
+   
+    initial begin
+        $monitor("Time=%0t | async_in=%b | sync_out=%b", $time, async_in, sync_out);
+    end
+
+endmodule
+
+   
